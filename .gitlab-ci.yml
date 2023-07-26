@@ -1,0 +1,7 @@
+stages:
+  - build
+  docker_build:
+    stage: build
+    script:
+      - docker build -t registry.scicore.unibas.ch/idm/countrymodelling/omu-docker-test .
+      - docker push registry.scicore.unibas.ch/idm/countrymodelling/omu-docker-test
