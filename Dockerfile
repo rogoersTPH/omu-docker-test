@@ -38,3 +38,4 @@ COPY renv/settings.json renv/settings.json
 RUN R -e "renv::restore()" \
     && R -e "renv::install('SwissTPH/r-openMalariaUtilities', ref = 'v23.02')" \
     && R -e "renv::snapshot()"
+RUN chmod -R 777 /root/.cache/R
