@@ -28,14 +28,30 @@ COPY --from=build /openmalaria/openmalariaRelease/* ./
 # Install and setup R environment
 WORKDIR /omu
 ARG RENV_VERSION=v1.0.0
+ENV PROJ_ROOT='/usr/local/src/renv_test'
+ENV RENV_DIR='/usr/local/.renv/'
+
 RUN R -e "install.packages('remotes', repos = c(CRAN = 'https://cloud.r-project.org'))" \
     && R -e "remotes::install_github('rstudio/renv@${RENV_VERSION}')" \
     && mkdir -p renv
+
 COPY renv.lock renv.lock
 COPY .Rprofile .Rprofile
 COPY renv/activate.R renv/activate.R
 COPY renv/settings.json renv/settings.json
-RUN R -e "renv::restore()" \
+
+# Environment variable for renv cache
+ENV RENV_PATHS_CACHE=/opt/R-libs
+
+# Set up renv and restore packages.
+# Using an explicit library path helps make this more portable across Docker and Singularity.
+RUN R -e "renv::consent(provided = TRUE)" && \
+    R -e "renv::restore(library = '/opt/R-libs')" \
     && R -e "renv::install('SwissTPH/r-openMalariaUtilities', ref = 'v23.02')" \
     && R -e "renv::snapshot()"
-ENTRYPOINT ["Rscript"]
+
+# Set RENV_PATHS_LIBRARY to ensure that renv uses /opt/R-libs when launched
+ENV RENV_PATHS_LIBRARY=/opt/R-libs
+
+# Default command to launch R
+CMD ["R"]
