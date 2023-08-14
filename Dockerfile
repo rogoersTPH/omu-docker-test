@@ -51,9 +51,4 @@ ENV RENV_PATHS_LIBRARY renv/library
 RUN R -e "renv::restore()" \
     && R -e "renv::install('SwissTPH/r-openMalariaUtilities', ref = 'v23.02')" \
     && R -e "renv::snapshot()"
-
-# Set RENV_PATHS_LIBRARY to ensure that renv uses /opt/R-libs when launched
-# ENV RENV_PATHS_LIBRARY=/opt/R-libs
-
-# Default command to launch R
-CMD ["R"]
+ENTRYPOINT ["Rscript"]
