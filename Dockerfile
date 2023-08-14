@@ -24,7 +24,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   libgsl27 libxerces-c3.2 \
   && rm -rf /var/lib/apt/lists/*
 COPY --from=build /openmalaria/openmalariaRelease/* ./
-RUN ln -sfv /om/openmalaria /usr/local/bin/om/openmalaria
+RUN ln -sfv /om/openMalaria /usr/local/bin/openMalaria
 
 # Install and setup R environment
 WORKDIR /omu
