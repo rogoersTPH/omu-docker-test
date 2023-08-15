@@ -39,16 +39,11 @@ RUN R -e "install.packages('remotes', repos = c(CRAN = 'https://cloud.r-project.
 COPY renv.lock renv.lock
 ENV RENV_PATHS_LIBRARY renv/library
 
-# COPY .Rprofile .Rprofile
-# COPY renv/activate.R renv/activate.R
-# COPY renv/settings.json renv/settings.json
-
-# Environment variable for renv cache
-# ENV RENV_PATHS_CACHE=/opt/R-libs
-
 # Set up renv and restore packages.
 # Using an explicit library path helps make this more portable across Docker and Singularity.
 RUN R -e "renv::restore()" \
     && R -e "renv::install('SwissTPH/r-openMalariaUtilities', ref = 'v23.02')" \
     && R -e "renv::snapshot()"
-ENTRYPOINT ["Rscript"]
+
+# Default command to launch R
+CMD ["R"]
