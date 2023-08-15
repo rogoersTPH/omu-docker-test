@@ -46,4 +46,4 @@ RUN R -e "renv::restore()" \
     && R -e "renv::snapshot()"
 
 # Default command to launch R
-CMD ["R"]
+CMD ["Rscript"]
