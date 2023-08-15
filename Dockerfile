@@ -21,7 +21,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 FROM docker.io/rocker/r-ver:4.3 as deploy
 WORKDIR /om
 RUN apt-get update && apt-get install -y --no-install-recommends \
-  libgsl27 libxerces-c3.2 \
+  libgsl27 libxerces-c3.2 sqlite3 \
   && rm -rf /var/lib/apt/lists/*
 COPY --from=build /openmalaria/openmalariaRelease/* ./
 RUN ln -sfv /om/openMalaria /usr/local/bin/openMalaria
