@@ -1,0 +1,6 @@
+^LICENSE\.md$
+^\.dir-locals\.el$
+^\.editorconfig$
+^\.lintr$
+^\.gitlab-ci\.yml$
+^ci$

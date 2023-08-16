@@ -1,0 +1,21 @@
+image: rocker/verse:latest
+
+variables:
+  R_LIBS_USER: "$CI_PROJECT_DIR/ci/lib"
+
+cache:
+  paths:
+    - $R_LIBS_USER
+
+before_script:
+  - mkdir -p $R_LIBS_USER
+  - echo "R_LIBS='$R_LIBS_USER'" > .Renviron
+  - R -e 'devtools::install_deps(dependencies = TRUE, force = TRUE)'
+
+test:
+  script:
+    - tlmgr update --self && tlmgr install ec
+    - R -e 'rcmdcheck::rcmdcheck(error_on = "warning")'
+
+after_script:
+  - R -e 'covr::package_coverage(Sys.getenv("CI_PROJECT_DIR"))'
