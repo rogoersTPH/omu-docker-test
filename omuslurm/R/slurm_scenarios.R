@@ -57,11 +57,7 @@ slurmPrepareScenarios <- function(expName, scenarios, bSize = 200,
       file.path(openMalariaUtilities::getCache(x = "logsDir"), "scenarios"),
       paste0("slurm_", expName, "_scenarios")
     ),
-    pre = list(
-      "module purge",
-      "module load R/4.1.2-foss-2018b-Python-3.6.6"
-    ),
-    cmd = list(paste("Rscript", file.path(
+    cmd = list(paste("singularity exec", file.path(openMalariaUtilities::getCache(x = "experimentDir"), "..", "omu-docker-test_main.sif"), "Rscript", file.path(
       openMalariaUtilities::getCache(x = "experimentDir"), "slurm_run_scenarios.R"
     ), "$ID", "$SLURM_CPUS_PER_TASK")),
     file = filename

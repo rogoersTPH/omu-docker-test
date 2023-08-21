@@ -60,15 +60,15 @@ slurmPrepareSimulations <- function(expName, scenarios, bSize = 200,
     pre = list(
       ## REVIEW It seems that the OpenMalaria and R modules are conflicting.
       ##        Maybe we can find a way around this without forcing autoswap.
-      "export LMOD_DISABLE_SAME_NAME_AUTOSWAP=\"no\"",
-      "module purge",
-      "module load R/4.1.2-foss-2018b-Python-3.6.6",
-      "module load OpenMalaria/44.0-iomkl-2019.01",
+      ## "export LMOD_DISABLE_SAME_NAME_AUTOSWAP=\"no\"",
+      ## "module purge",
+      ## "module load R/4.1.2-foss-2018b-Python-3.6.6",
+      ## "module load OpenMalaria/44.0-iomkl-2019.01",
       ## This is quiet important, otherwise OpenMalaria cannot find the
       ## supporting files (*.xsd, etc)
       paste0("cd ", openMalariaUtilities::getCache(x = "experimentDir"))
     ),
-    cmd = list(paste("Rscript", file.path(
+    cmd = list(paste("singularity exec", file.path(openMalariaUtilities::getCache(x = "experimentDir"), "..", "omu-docker-test_main.sif"), "Rscript", file.path(
       openMalariaUtilities::getCache(x = "experimentDir"), "slurm_run_simulation.R"
     ), "$ID", "$SLURM_CPUS_PER_TASK")),
     file = filename
