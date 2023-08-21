@@ -21,7 +21,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 FROM docker.io/rocker/r-ver:4.3 as deploy
 WORKDIR /om
 RUN apt-get update && apt-get install -y --no-install-recommends \
-  libgsl27 libxerces-c3.2 sqlite3 \
+  libgsl27 libxerces-c3.2 libmysqlclient21 sqlite3 \
   && rm -rf /var/lib/apt/lists/*
 COPY --from=build /openmalaria/openmalariaRelease/* ./
 RUN ln -sfv /om/openMalaria /usr/local/bin/openMalaria
@@ -41,14 +41,16 @@ ENV RENV_PATHS_LIBRARY renv/library
 # Using an explicit library path helps make this more portable across Docker and Singularity.
 COPY omucompat ./omucompat
 COPY omuslurm ./omuslurm
+COPY omuaddons ./omuaddons
 
 RUN R -e "renv::restore()" \
     && R -e "renv::install('SwissTPH/r-openMalariaUtilities', ref = 'v23.02')" \
+    && R -e "renv::install('SwissTPH/AnophelesModel')" \
     && R -e "renv::install('./omucompat')" \
     && R -e "renv::install('./omuslurm')" \
+    && R -e "renv::install('./omuaddons')" \
     && R -e "renv::snapshot()"
 
-COPY omuaddons ./omuaddons
 
 # Default command to launch R
 CMD ["Rscript"]
