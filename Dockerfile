@@ -46,6 +46,7 @@ COPY omuaddons ./omuaddons
 RUN R -e "renv::restore()" \
     && R -e "renv::install('SwissTPH/r-openMalariaUtilities', ref = 'v23.02')" \
     && R -e "renv::install('SwissTPH/AnophelesModel')" \
+    && R -e "renv::install('tidyverse')" \
     && R -e "renv::install('broom')" \
     && R -e "renv::install('extraDistr')" \
     && R -e "renv::install('ggthemes')" \
