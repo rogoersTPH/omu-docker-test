@@ -101,7 +101,7 @@ check_simulations_created <- function(experiment_folder,
       file.remove(missing_om_file)
     }
   } else {
-    required_simulation_files <- sub(pattern = \"\\.xml$\", replacement = \"_out.txt\", x = scenario_list_required$file)
+    required_simulation_files <- sub(pattern = \"\\\\.xml$\", replacement = \"_out.txt\", x = scenario_list_required$file)
     ind_missing <- which(!(required_simulation_files %in% simulation_list_created))
     list_missing <- required_simulation_files[ind_missing]
     write(list_missing, missing_om_file)
@@ -154,7 +154,7 @@ slurmCreateScenarios <- function(moreArgs = NULL, n = 0, limit = 3, ...) {
     )
 
     ## Filter out .batch/.extern substrings
-    status <- status[!grepl(pattern = \"[0-9]+_[0-9]+\\..+\", x = status$V1), ]
+    status <- status[!grepl(pattern = \"[0-9]+_[0-9]+\\\\..+\", x = status$V1), ]
     ## Keep only failed jobs
     fails <- status[status$V2 %in% c(\"BOOT_FAIL\", \"NODE_FAIL\", \"FAILED\"), ]
     ## Get the batch numbers
@@ -231,7 +231,7 @@ slurmRunSimulation <- function(moreArgs = NULL, n = 0, limit = 3, ...) {
     )
 
     ## Filter out .batch/.extern substrings
-    status <- status[!grepl(pattern = \"[0-9]+_[0-9]+\\..+\", x = status$V1), ]
+    status <- status[!grepl(pattern = \"[0-9]+_[0-9]+\\\\..+\", x = status$V1), ]
     ## Keep only failed jobs
     fails <- status[status$V2 %in% c(\"BOOT_FAIL\", \"NODE_FAIL\", \"FAILED\"), ]
     ## Get the batch numbers
