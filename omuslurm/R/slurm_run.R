@@ -309,7 +309,11 @@ print(paste(Sys.time(), \"-> Loading experiment ...\"))
 experiment_folder = \"", paste0(openMalariaUtilities::getCache(x = "experimentDir")), "\"
 
 # Source lib
-source(\"slurm_run_lib.R\")
+source(
+  file.path(
+        \"", paste0(openMalariaUtilities::getCache("experimentDir")), "\",
+    \"slurm_run_lib.R\")
+)
 
 # Create scenarios
 print(paste(Sys.time(), \"-> Creating scenarios ...\"))
