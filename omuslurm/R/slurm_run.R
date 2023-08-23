@@ -139,7 +139,7 @@ slurmCreateScenarios <- function(moreArgs = NULL, n = 0, limit = 3, ...) {
 
     jobID <- as.numeric(
       gsub(
-        pattern = \"Submitted batch job ([0-9]+)\", replacement = \"\\1\", x = jobID
+        pattern = \"Submitted batch job ([0-9]+)\", replacement = \"\\\\1\", x = jobID
       )
     )
 
@@ -159,7 +159,7 @@ slurmCreateScenarios <- function(moreArgs = NULL, n = 0, limit = 3, ...) {
     fails <- status[status$V2 %in% c(\"BOOT_FAIL\", \"NODE_FAIL\", \"FAILED\"), ]
     ## Get the batch numbers
     fails$V3 <- as.numeric(gsub(
-      pattern = \"[0-9]+_([0-9]+)\", replacement = \"\\1\", x = fails$V1
+      pattern = \"[0-9]+_([0-9]+)\", replacement = \"\\\\1\", x = fails$V1
     ))
     new_runs <- fails$V3
     ## Inform about non-failed or completed jobs
@@ -216,7 +216,7 @@ slurmRunSimulation <- function(moreArgs = NULL, n = 0, limit = 3, ...) {
 
     jobID <- as.numeric(
       gsub(
-        pattern = \"Submitted batch job ([0-9]+)\", replacement = \"\\1\", x = jobID
+        pattern = \"Submitted batch job ([0-9]+)\", replacement = \"\\\\1\", x = jobID
       )
     )
 
@@ -236,7 +236,7 @@ slurmRunSimulation <- function(moreArgs = NULL, n = 0, limit = 3, ...) {
     fails <- status[status$V2 %in% c(\"BOOT_FAIL\", \"NODE_FAIL\", \"FAILED\"), ]
     ## Get the batch numbers
     fails$V3 <- as.numeric(gsub(
-      pattern = \"[0-9]+_([0-9]+)\", replacement = \"\\1\", x = fails$V1
+      pattern = \"[0-9]+_([0-9]+)\", replacement = \"\\\\1\", x = fails$V1
     ))
     new_runs <- fails$V3
     ## Inform about non-failed or completed jobs
