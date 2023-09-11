@@ -85,6 +85,7 @@ message(paste0(\"Working on \", s))
 collectResults(
 expDir = \"", dir, "\",
 dbName = \"test\",
+dbDir = \"", dir, "\",
 replace = FALSE,
 fileFun = fileCol, fileFunArgs = list(scens = scens, cname = s),
 aggrFun = funs$cAggrFun, aggrFunArgs = funs$cAggrFunArgs,
@@ -194,6 +195,7 @@ message(paste0(\"Working on scenario \", lower_scen, \" to \", upper_scen))
 collectResults(
 expDir = \"", dir, "\",
 dbName = \"test\",
+dbDir = \"", dir, "\",
 replace = FALSE,
 fileFun = fileCol, fileFunArgs = list(scens = scens, ffilter = batches[[batch]]),
 aggrFun = funs$cAggrFun, aggrFunArgs = funs$cAggrFunArgs,

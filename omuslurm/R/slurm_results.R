@@ -132,12 +132,12 @@ slurmPrepareResults <- function(expDir, dbName, dbDir = NULL,
   ## Create R script
   if (is.character(splitBy)) {
     .writeSettingsLoop(
-      expDir, dbName, as.list(resultsCols), indexOn, ncoresDT,
+      expDir, dbName, dbDir, as.list(resultsCols), indexOn, ncoresDT,
       verbose, strategy, splitBy
     )
   } else if (is.numeric(splitBy)) {
     .write10kLoop(
-      expDir, dbName, resultsName, as.list(resultsCols), indexOn,
+      expDir, dbName, dbDir, resultsName, as.list(resultsCols), indexOn,
       ncoresDT, verbose, strategy, splitBy
     )
   } else {
@@ -145,7 +145,7 @@ slurmPrepareResults <- function(expDir, dbName, dbDir = NULL,
   }
 }
 
-.write10kLoop <- function(expDir, dbName, resultsName, resultsCols,
+.write10kLoop <- function(expDir, dbName, dbDir, resultsName, resultsCols,
                           indexOn, ncoresDT, verbose, strategy, num) {
   cat(
     "#!/usr/bin/env Rscript
@@ -185,6 +185,7 @@ message(paste0(\"Working on scenario \", lower_scen, \" to \", upper_scen))
 collectResults(
 expDir = ", noquote(deparse(expDir)), ",
 dbName = ", noquote(deparse(dbName)), ",
+dbDir = ", noquote(deparse(dbDir)), ",
 replace = FALSE,
 fileFun = fileCol, fileFunArgs = list(scens = scens, ffilter = batches[[batch]]),
 aggrFun = funs$cAggrFun, aggrFunArgs = funs$cAggrFunArgs,
@@ -206,7 +207,7 @@ gc(verbose = TRUE)
   )
 }
 
-.writeSettingsLoop <- function(expDir, dbName, resultsCols, indexOn,
+.writeSettingsLoop <- function(expDir, dbName, dbDir, resultsCols, indexOn,
                                ncoresDT, verbose, strategy, colName) {
   cat(
     "#!/usr/bin/env Rscript
@@ -241,6 +242,7 @@ message(paste0(\"Working on \", s))
 collectResults(
 expDir = ", noquote(deparse(expDir)), ",
 dbName = ", noquote(deparse(dbName)), ",
+dbDir = ", noquote(deparse(dbDir)), ",
 replace = FALSE,
 fileFun = fileCol, fileFunArgs = list(scens = scens, cname = s),
 aggrFun = funs$cAggrFun, aggrFunArgs = funs$cAggrFunArgs,

@@ -2,6 +2,10 @@
 
 export(cancel_jobs)
 export(cluster_status)
+export(sgePrepareResults)
+export(sgePrepareRun)
+export(sgePrepareScenarios)
+export(sgePrepareSimulations)
 export(slurmCreateScenarios)
 export(slurmPrepareResults)
 export(slurmPrepareRun)
