@@ -300,7 +300,7 @@ sgePrepareResults <- function(expDir, dbName, dbDir = NULL,
   cat(
     "#$ -N ", paste0(expName, "_results"), "
 #$ -pe smp ", nCPU, "
-#$ -l h_vmem=", memCPU, "
+#$ -l h_vmem=", mem, "
 #$ -o ", file.path(
       file.path(openMalariaUtilities::getCache(x = "logsDir"), "results"),
       paste0("sge_", expName, "_results_$JOB_ID.log")
@@ -309,7 +309,6 @@ sgePrepareResults <- function(expDir, dbName, dbDir = NULL,
         file.path(openMalariaUtilities::getCache(x = "logsDir"), "results"),
         paste0("sge_", expName, "_results_$JOB_ID_error.log")
 ), "
-#$ -t 1-", nbatches, "
 #$ -l h_rt=", time, "
 #$ -q ", qos, "
 ID=$(expr ${SGE_TASK_ID} - 0)
