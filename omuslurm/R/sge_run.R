@@ -26,10 +26,18 @@ sgePrepareScenarios <- function(expName, scenarios, bSize = 200,
     path = openMalariaUtilities::getCache(x = "experimentDir")
   )
 
+  ## Memmory
+  memfree <- memCPU
+  svmem <- memCPU
+  ## Increase hard limit by 10 percent
+  hvmem <- paste0(ceiling(as.numeric(gsub("[^0-9.]", "", memCPU)) * 1.1), gsub("[0-9.]", "", memCPU))
+
   cat(
     "#$ -N ", paste0(expName, "_scenarios"), "
 #$ -pe smp ", nCPU, "
-#$ -l h_vmem=", memCPU, "
+#$ -l mem_free=", memfree, "
+#$ -l s_vmem=", svmem, "
+#$ -l h_vmem=", hvmem, "
 #$ -o ", file.path(
       file.path(openMalariaUtilities::getCache(x = "logsDir"), "scenarios"),
       paste0("sge_", expName, "_scenarios_$JOB_ID.log")
@@ -125,10 +133,18 @@ sgePrepareSimulations <- function(expName, scenarios, bSize = 200,
     path = openMalariaUtilities::getCache(x = "experimentDir")
   )
 
+  ## Memmory
+  memfree <- memCPU
+  svmem <- memCPU
+  ## Increase hard limit by 10 percent
+  hvmem <- paste0(ceiling(as.numeric(gsub("[^0-9.]", "", memCPU)) * 1.1), gsub("[0-9.]", "", memCPU))
+
   cat(
     "#$ -N ", paste0(expName, "_simulation"), "
 #$ -pe smp ", nCPU, "
-#$ -l h_vmem=", memCPU, "
+#$ -l mem_free=", memfree, "
+#$ -l s_vmem=", svmem, "
+#$ -l h_vmem=", hvmem, "
 #$ -o ", file.path(
       file.path(openMalariaUtilities::getCache(x = "logsDir"), "simulation"),
       paste0("sge_", expName, "_simulation_$JOB_ID.log")
@@ -241,7 +257,7 @@ sgePrepareResults <- function(expDir, dbName, dbDir = NULL,
                                 ),
                                 splitBy = 10000,
                                 verbose = FALSE,
-                                mem = "32G", nCPU = 1,
+                                memCPU = "2G", nCPU = 1,
                                 time = "06:00:00", qos = "all.q", ...) {
   ## Get path if not given
   if (is.null(dbDir)) {
@@ -297,10 +313,18 @@ sgePrepareResults <- function(expDir, dbName, dbDir = NULL,
   ## Create a submission script
   expName <- openMalariaUtilities::getCache(x = "experimentName")
 
+  ## Memmory
+  memfree <- memCPU
+  svmem <- memCPU
+  ## Increase hard limit by 10 percent
+  hvmem <- paste0(ceiling(as.numeric(gsub("[^0-9.]", "", memCPU)) * 1.1), gsub("[0-9.]", "", memCPU))
+
   cat(
     "#$ -N ", paste0(expName, "_results"), "
 #$ -pe smp ", nCPU, "
-#$ -l h_vmem=", mem, "
+#$ -l mem_free=", memfree, "
+#$ -l s_vmem=", svmem, "
+#$ -l h_vmem=", hvmem, "
 #$ -o ", file.path(
       file.path(openMalariaUtilities::getCache(x = "logsDir"), "results"),
       paste0("sge_", expName, "_results_$JOB_ID.log")
@@ -588,7 +612,7 @@ check_simulations_created <- function(experiment_folder,
 
 sgeCreateScenarios <- function(...) {
   system(command = paste0(
-      \"qsub \", file.path(
+      \"qsub -sync y \", file.path(
         \"", paste0(openMalariaUtilities::getCache("experimentDir")), "\",
         \"sge_scenarios.sh\"
       )
@@ -597,7 +621,7 @@ sgeCreateScenarios <- function(...) {
 
 sgeRunSimulation <- function(...) {
   system(command = paste0(
-      \"qsub \", file.path(
+      \"qsub -sync y \", file.path(
         \"", paste0(openMalariaUtilities::getCache("experimentDir")), "\",
         \"sge_simulation.sh\"
       )
@@ -607,7 +631,7 @@ sgeRunSimulation <- function(...) {
 sgeRunResults <- function(...) {
   system(
     command = paste0(
-      \"qsub \", file.path(
+      \"qsub -sync y \", file.path(
         \"", paste0(openMalariaUtilities::getCache("experimentDir")), "\",
         \"sge_results.sh\"
       )
